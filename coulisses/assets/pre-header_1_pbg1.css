@@ -1,0 +1,66 @@
+.shared-pre-header {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -moz-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: 100%;
+  height: 50px;
+  background-color: black;
+}
+@media screen and (max-width: 1023px) {
+  .shared-pre-header {
+    display: none;
+  }
+}
+.shared-pre-header ul {
+  margin: 0;
+  padding: 0;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+}
+.shared-pre-header ul li {
+  cursor: pointer;
+  margin: 0 30px;
+  font-family: Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 14px;
+  color: #a4a4a4;
+}
+.shared-pre-header ul li:first-child {
+  margin-left: 0;
+}
+.shared-pre-header ul li:last-child {
+  margin-right: 0;
+}
+.shared-pre-header ul li.selected {
+  color: white;
+  position: relative;
+}
+.shared-pre-header ul li.selected::after {
+  content: url('data:image/svg+xml;charset=UTF-8, <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="18" width="18"><rect id="rect" x="0" y="0" width="18" height="18"  fill="white" transform="translate(9,9) rotate(45)"/></svg>');
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.shared-pre-header ul li a {
+  text-decoration: none;
+  color: inherit;
+}
+.shared-pre-header ul li:hover {
+  color: white;
+}
+.shared-pre-header .shared-pre-header-milou {
+  width: 67px;
+  height: 55px;
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(400px);
+}
