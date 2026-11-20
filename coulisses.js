@@ -7,16 +7,16 @@
 
 
   var nl=$('#cdo-nl');
-  nl.addEventListener('submit',function(e){e.preventDefault();var m=$('#cdo-nl-msg');
+  if(nl)nl.addEventListener('submit',function(e){e.preventDefault();var m=$('#cdo-nl-msg');
     if(!emailOk($('#cdo-nl-email').value.trim()))return say(m,'Merci de saisir une adresse e-mail valide.');
     if(!$('#cdo-nl-ok').checked)return say(m,'Merci d’accepter de recevoir la newsletter pour continuer.');
     nl.reset();say(m,'Merci ! Vous êtes inscrit(e) à la newsletter Tintin.com (simulation).',true);});
 
 
   var inp=$('#cdo-reseller-search');
-  inp.addEventListener('input',function(){var q=inp.value.trim().toLowerCase(),n=0;
+  if(inp)inp.addEventListener('input',function(){var q=inp.value.trim().toLowerCase(),n=0;
     $$('.cdo-reseller').forEach(function(li){var ok=!q||li.getAttribute('data-search').indexOf(q)>-1;li.hidden=!ok;if(ok)n++});
-    $('#cdo-noresult').hidden=n>0;});
+    var nr=$('#cdo-noresult');if(nr)nr.hidden=n>0;});
 
   var modal=$('#cdo-modal'),mode='',lastFocus=null;
   function open(m,title){mode=m;lastFocus=document.activeElement;
