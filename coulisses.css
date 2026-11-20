@@ -70,7 +70,8 @@
 }
 .cdo .button.small {
   font-size: 12px;
-
+  margin-top: 20px;
+  margin-bottom: 20px;
   cursor: pointer;
 }
 .cdo .cdo-btn-light {

@@ -1,24 +1,23 @@
-/* Maquette : comportements simulés (aucun envoi réel) */
+
 (function(){
   var $=function(s,c){return (c||document).querySelector(s)},$$=function(s,c){return [].slice.call((c||document).querySelectorAll(s))};
   var emailOk=function(v){return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)};
   var store={get:function(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}},set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
   var say=function(el,t,ok){el.textContent=t;el.className='cdo-msg '+(ok?'ok':'err')};
 
-  /* Newsletter */
+
   var nl=$('#cdo-nl');
   nl.addEventListener('submit',function(e){e.preventDefault();var m=$('#cdo-nl-msg');
     if(!emailOk($('#cdo-nl-email').value.trim()))return say(m,'Merci de saisir une adresse e-mail valide.');
     if(!$('#cdo-nl-ok').checked)return say(m,'Merci d’accepter de recevoir la newsletter pour continuer.');
     nl.reset();say(m,'Merci ! Vous êtes inscrit(e) à la newsletter Tintin.com (simulation).',true);});
 
-  /* Revendeurs : filtre */
+
   var inp=$('#cdo-reseller-search');
   inp.addEventListener('input',function(){var q=inp.value.trim().toLowerCase(),n=0;
     $$('.cdo-reseller').forEach(function(li){var ok=!q||li.getAttribute('data-search').indexOf(q)>-1;li.hidden=!ok;if(ok)n++});
     $('#cdo-noresult').hidden=n>0;});
 
-  /* Modale */
   var modal=$('#cdo-modal'),mode='',lastFocus=null;
   function open(m,title){mode=m;lastFocus=document.activeElement;
     $('#cdo-modal-title').textContent=m==='alert'?'Être prévenu(e) de la parution':'Précommander';
@@ -37,17 +36,22 @@
     say(m,mode==='alert'?'C’est noté, vous serez prévenu(e) (simulation).':'Préinscription enregistrée (simulation).',true);
     setTimeout(close,1400);});
 
-  /* "Ça m'intéresse" (compteur conservé localement) */
+
   var interest=store.get('cdo-interest')||{};
   $$('.cdo-up').forEach(function(card){
-    var id=card.getAttribute('data-id'),btn=$('.js-interest',card),c=$('.js-count',card),base=+c.getAttribute('data-base');
-    function paint(){var on=!!interest[id];btn.setAttribute('aria-pressed',on);btn.textContent=on?'✓ Intérêt enregistré':'Ça m’intéresse';c.textContent=base+(on?1:0)}
-    paint();
-    btn.addEventListener('click',function(){interest[id]=!interest[id];store.set('cdo-interest',interest);paint()});
-    $('.js-alert',card).addEventListener('click',function(){open('alert',card.getAttribute('data-title'))});
-    $('.js-preorder',card).addEventListener('click',function(){open('preorder',card.getAttribute('data-title'))});
+    var id=card.getAttribute('data-id'),btn=$('.js-interest',card),c=$('.js-count',card),
+        alertBtn=$('.js-alert',card),preBtn=$('.js-preorder',card);
+    /* Les boutons sont optionnels : on n'attache que ceux présents dans la carte */
+    if(btn&&c){
+      var base=+c.getAttribute('data-base')||0;
+      var paint=function(){var on=!!interest[id];btn.setAttribute('aria-pressed',on);btn.textContent=on?'✓ Intérêt enregistré':'Ça m’intéresse';c.textContent=base+(on?1:0)};
+      paint();
+      btn.addEventListener('click',function(){interest[id]=!interest[id];store.set('cdo-interest',interest);paint()});
+    }
+    if(alertBtn)alertBtn.addEventListener('click',function(){open('alert',card.getAttribute('data-title'))});
+    if(preBtn)preBtn.addEventListener('click',function(){open('preorder',card.getAttribute('data-title'))});
   });
 })();
 
-/* Maquette : liens désactivés */
+
 document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href="#"]');if(a)e.preventDefault()});
